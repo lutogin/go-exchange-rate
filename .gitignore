@@ -3,3 +3,4 @@ identifier.sqlite
 
 .idea
 .vscode
+.env

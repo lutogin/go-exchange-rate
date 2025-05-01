@@ -8,6 +8,7 @@ import (
 	"exchange-rate/intrenal/exchange"
 	"exchange-rate/intrenal/input"
 	"exchange-rate/intrenal/storage"
+	"fmt"
 	"go.uber.org/dig"
 )
 
@@ -15,8 +16,15 @@ func BuildContainer() *dig.Container {
 	container := dig.New()
 
 	// Provide dependencies
-	container.Provide(func() *exchange.Client {
-		return exchange.New(config.ApiKey)
+	container.Provide(func() *config.Config {
+		cfg, err := config.LoadConfig()
+		if err != nil {
+			fmt.Errorf("failed to load config: %w", err)
+		}
+		return cfg
+	})
+	container.Provide(func(cfg *config.Config) *exchange.Client {
+		return exchange.New(cfg.ApiKey)
 	})
 	container.Provide(func() *storage.Storage {
 		return storage.New()
