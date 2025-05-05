@@ -42,14 +42,16 @@ func (c *Cache) GetCurrencyRates(cur currency.Currency) (currency.CurrentRates, 
 		SELECT quotes, expiration FROM cache WHERE currency = ?
 	`, cur).Scan(&quotesJSON, &expiration)
 	if err == sql.ErrNoRows {
-		return currency.CurrentRates{}, nil // the rate is not found in the cache
+		return currency.CurrentRates{}, nil
 	} else if err != nil {
 		return currency.CurrentRates{}, err
 	}
 
 	// check if the cached rate is expired
 	if time.Now().Unix() > expiration.Unix() {
-		_ = c.DeleteCurrencyRate(cur) // remove expired rate
+		go func() {
+			_ = c.DeleteCurrencyRate(cur)
+		}()
 		return currency.CurrentRates{}, nil
 	}
 
