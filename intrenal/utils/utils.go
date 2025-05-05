@@ -2,14 +2,17 @@ package utils
 
 import (
 	"bufio"
-	"exchange-rate/intrenal/errors"
+	"exchange-rate/intrenal/_errors"
 	"os"
 )
 
 func ParseUserInput() (string, error) {
 	scanner := bufio.NewScanner(os.Stdin)
 	if !scanner.Scan() {
-		return "", errors.InvalidInputError
+		return "", _errors.InvalidInputError
+	}
+	if scanner.Text() == "" {
+		return "", _errors.EmptyInputError
 	}
 	return scanner.Text(), nil
 }

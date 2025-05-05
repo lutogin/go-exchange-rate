@@ -16,14 +16,14 @@ func main() {
 	})
 
 	if err != nil {
-		log.Fatalf("Error: %v", err)
+		log.Fatalf("Error running container: %v", err)
 	}
 
 	// Run the application
 	if err := appInstance.Run(); err != nil {
 		log.Fatalf("Error running app: %v", err)
 	} else {
-		log.Println("App ran successfully")
+		log.Println("App run successfully")
 	}
 
 	// Close the database connection

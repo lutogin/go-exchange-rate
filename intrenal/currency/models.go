@@ -1,7 +1,7 @@
 package currency
 
 import (
-	"exchange-rate/intrenal/errors"
+	"exchange-rate/intrenal/_errors"
 	"slices"
 )
 
@@ -352,7 +352,7 @@ type CurrentRates = map[PairCurrency]float64
 
 func CheckCurrency(currency string) error { // currency must be uppercase
 	if slices.Index(CurrenciesList, currency) == -1 {
-		return errors.InvalidCurrencyError
+		return _errors.InvalidCurrencyError
 	}
 	return nil
 }
